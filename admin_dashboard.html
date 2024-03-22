@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+</head>
+<body>
+<h1>Admin Dashboard</h1>
+<p>Welcome, Admin {{ current_user.username }}</p>
+
+<!-- Post a new job form -->
+<h2>Post a New Job</h2>
+<form action="{{ url_for('post_job') }}" method="post">
+    <label for="job_title">Job Title:</label>
+    <input type="text" id="job_title" name="job_title" required><br>
+    <label for="vacancies">Number of Vacancies:</label>
+    <input type="number" id="vacancies" name="vacancies" required><br>
+    <label for="location">Location:</label>
+    <input type="text" id="location" name="location" required><br>
+    <label for="skills_required">Skills Required:</label>
+    <input type="text" id="skills_required" name="skills_required" required><br>
+    <label for="experience">Experience:</label>
+    <input type="text" id="experience" name="experience" required><br>
+    <label for="ctc">CTC:</label>
+    <input type="text" id="ctc" name="ctc" required><br>
+    <button type="submit">Post Job</button>
+</form>
+
+<!-- Manage jobs (list, update, delete) -->
+<h2>Manage Jobs</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Job ID</th>
+            <th>Job Title</th>
+            <th>Vacancies</th>
+            <th>Location</th>
+            <th>Skills Required</th>
+            <th>Experience</th>
+            <th>CTC</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for job in jobs %}
+        <tr>
+            <td>{{ job.id }}</td>
+            <td>{{ job.title }}</td>
+            <td>{{ job.vacancies }}</td>
+            <td>{{ job.location }}</td>
+            <td>{{ job.skills_required }}</td>
+            <td>{{ job.experience }}</td>
+            <td>{{ job.ctc }}</td>
+            <td>
+                <a href="{{ url_for('update_job', job_id=job.id) }}">Update</a> |
+                <a href="{{ url_for('delete_job', job_id=job.id) }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Manage candidates (list, delete) -->
+<h2>Manage Candidates</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Candidate ID</th>
+            <th>Name</th>
+            <th>Qualification</th>
+            <th>Work Experience</th>
+            <th>Skills</th>
+            <th>Missing Skills</th>
+            <th>Post Applied For</th>
+            <th>Resume</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for candidate in candidates %}
+        <tr>
+            <td>{{ candidate.id }}</td>
+            <td>{{ candidate.name }}</td>
+            <td>{{ candidate.qualification }}</td>
+            <td>{{ candidate.work_experience }}</td>
+            <td>{{ candidate.skills }}</td>
+            <td>{{ candidate.missing_skills }}</td>
+            <td>{{ candidate.post_applied_for }}</td>
+            <td><a href="{{ url_for('view_resume', candidate_id=candidate.id) }}">View Resume</a></td>
+            <td>
+                <a href="{{ url_for('delete_candidate', candidate_id=candidate.id) }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p><a href="{{ url_for('logout') }}">Logout</a></p>
+</body>
+</html>
